@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hệ Thống Quản Lý Bất Động Sản</title>
+    <link rel="stylesheet" href="css/style.css">
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Animate.css -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <!-- Custom CSS -->
+    <style>
+        /* Reset & Base styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #2c3e50;
+            --primary-light: #34495e;
+            --primary-dark: #1a252f;
+        }
+
+        body {
+            min-height: 100vh;
+            overflow-x: hidden;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        /* Responsive Typography */
+        html {
+            font-size: 16px;
+        }
+
+        @media (max-width: 768px) {
+            html {
+                font-size: 14px;
+            }
+        }
+
+        /* Enhanced Card Animations */
+        .card {
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+            margin-bottom: 1rem;
+            border-radius: 1rem;
+            border: none;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 1rem;
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+            z-index: -1;
+        }
+
+        .card:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+        }
+
+        .card:hover::after {
+            opacity: 1;
+        }
+
+        /* Enhanced Stats Section */
+        .stats-icon {
+            font-size: clamp(2.2rem, 4vw, 3rem);
+            margin-bottom: 1.2rem;
+            color: var(--primary-color);
+            opacity: 0.9;
+            transition: all 0.4s ease;
+            transform-origin: center;
+        }
+
+        .card:hover .stats-icon {
+            transform: scale(1.15) rotate(5deg);
+            color: var(--primary-dark);
+        }
+
+        /* Enhanced Navigation */
+        .navbar {
+            padding: 0.8rem 0;
+            backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.95) !important;
+            transition: all 0.4s ease;
+        }
+
+        .navbar-brand {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-color) !important;
+            padding: 0.5rem 1rem;
+            transition: all 0.4s ease;
+        }
+
+        .navbar-brand:hover {
+            transform: scale(1.05);
+        }
+
+        .nav-link {
+            font-weight: 500;
+            padding: 0.5rem 0.8rem;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            margin: 0 0.1rem;
+            white-space: nowrap;
+            font-size: 0.9rem;
+            position: relative;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background: var(--primary-color);
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
+        }
+
+        .nav-link:hover::after {
+            width: 80%;
+        }
+
+        .nav-link:hover {
+            color: var(--primary-color) !important;
+            transform: translateY(-2px);
+        }
+
+        /* Enhanced Button Animations */
+        .btn {
+            padding: 0.6rem 1.2rem;
+            font-weight: 500;
+            border-radius: 0.5rem;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: all 0.6s ease;
+        }
+
+        .btn:hover::before {
+            width: 300%;
+            height: 300%;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+            box-shadow: 0 4px 15px rgba(44,62,80,0.2);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+            border-color: var(--primary-dark);
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 8px 25px rgba(44,62,80,0.3);
+        }
+
+        /* Enhanced Table Animations */
+        .table-hover tbody tr {
+            transition: all 0.3s ease;
+        }
+
+        .table-hover tbody tr:hover {
+            background-color: rgba(44, 62, 80, 0.08);
+            transform: scale(1.01);
+            box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+        }
+
+        /* Enhanced Loading Animation */
+        .loading-spinner {
+            animation: spinner 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+        }
+
+        /* Enhanced Counter Animations */
+        .counter {
+            font-weight: 600;
+            color: var(--primary-color);
+            transition: all 0.4s ease;
+            display: inline-block;
+        }
+
+        .card:hover .counter {
+            transform: scale(1.1);
+            text-shadow: 0 0 10px rgba(44,62,80,0.3);
+        }
+
+        /* Enhanced Progress Bar */
+        .progress {
+            overflow: hidden;
+            position: relative;
+        }
+
+        .progress-bar {
+            background-color: var(--primary-color);
+            transition: width 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+        }
+
+        .progress-bar::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            animation: progressShine 2s infinite;
+        }
+
+        @keyframes progressShine {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        /* Enhanced Search Filters Animation */
+        .search-filters {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .search-filters:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.1);
+        }
+
+        .form-control, .form-select {
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus, .form-select:focus {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(44,62,80,0.2);
+            border-color: var(--primary-color);
+        }
+
+        /* Enhanced Dropdown Animation */
+        .dropdown-menu {
+            animation: dropdownFade 0.3s ease;
+            transform-origin: top;
+        }
+
+        @keyframes dropdownFade {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Enhanced Dark Mode Transition */
+        .dark-mode {
+            transition: background-color 0.4s ease, color 0.4s ease;
+        }
+
+        /* Enhanced Mobile Animations */
+        @media (max-width: 768px) {
+            .card:hover {
+                transform: translateY(-5px) scale(1.01);
+            }
+            
+            .btn:hover {
+                transform: translateY(-2px) scale(1.01);
+            }
+        }
+
+        /* Enhanced Animate.css Customization */
+        .animate__animated {
+            animation-duration: 0.8s;
+            animation-fill-mode: both;
+        }
+
+        .animate__fadeIn {
+            animation-duration: 1s;
+        }
+
+        .animate__fadeInUp {
+            animation-duration: 0.8s;
+        }
+
+        .animate__fadeInDown {
+            animation-duration: 0.8s;
+        }
+
+        .bg-primary {
+            background-color: var(--primary-color) !important;
+        }
+
+        .text-primary {
+            color: var(--primary-color) !important;
+        }
+    </style>
+</head>
+<body class="light-mode">
+    <!-- Rest of the HTML remains unchanged -->
+    <!-- Header -->
+    <header class="navbar navbar-expand-lg navbar-light bg-light fixed-top shadow-sm">
+        <div class="container">
+            <a class="navbar-brand animate__animated animate__fadeIn" href="#">
+                <i class="fas fa-building me-2"></i>QuanLyNha.vn
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarControls">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarControls">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0 d-flex flex-nowrap">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#"><i class="fas fa-home me-1"></i>Trang chủ</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#"><i class="fas fa-building me-1"></i>Bất động sản</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#"><i class="fas fa-users me-1"></i>Khách thuê</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#"><i class="fas fa-file-contract me-1"></i>Hợp đồng</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#"><i class="fas fa-money-bill-wave me-1"></i>Thanh toán</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#"><i class="fas fa-chart-bar me-1"></i>Báo cáo</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#"><i class="fas fa-cog me-1"></i>Cài đặt</a>
+                    </li>
+                </ul>
+                <div class="ms-auto d-flex flex-nowrap align-items-center">
+                    <!-- <button class="btn btn-outline-primary me-2 animate__animated animate__fadeIn" id="toggleTheme">
+                        <i class="fas fa-moon"></i>
+                    </button> -->
+                    <select class="form-select animate__animated animate__fadeIn" id="languageSelect">
+                        <option value="vi">Tiếng Việt</option>
+                        <option value="en">English</option>
+                    </select>
+                    <div class="nav-item dropdown ms-2">
+                        <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown">
+                            <i class="fas fa-user-circle me-1"></i>Tài khoản
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li><a class="dropdown-item" href="#"><i class="fas fa-user me-2"></i>Hồ sơ</a></li>
+                            <li><a class="dropdown-item" href="#"><i class="fas fa-bell me-2"></i>Thông báo</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="#"><i class="fas fa-sign-out-alt me-2"></i>Đăng xuất</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mt-5 pt-5">
+        <!-- Search Filters -->
+        <div class="search-filters animate__animated animate__fadeInDown">
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="propertyType"><i class="fas fa-home me-2"></i>Loại bất động sản</label>
+                        <select class="form-select" id="propertyType">
+                            <option value="">Tất cả</option>
+                            <option value="apartment">Căn hộ</option>
+                            <option value="room">Phòng trọ</option>
+                            <option value="house">Nhà ở</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="location"><i class="fas fa-map-marker-alt me-2"></i>Vị trí</label>
+                        <select class="form-select" id="location">
+                            <option value="">Tất cả khu vực</option>
+                            <option value="district1">Quận 1</option>
+                            <option value="district2">Quận 2</option>
+                            <option value="district3">Quận 3</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="priceRange"><i class="fas fa-money-bill me-2"></i>Giá thuê (triệu VNĐ)</label>
+                        <div class="d-flex align-items-center">
+                            <input type="number" class="form-control me-2" id="minPrice" placeholder="Từ">
+                            <span>-</span>
+                            <input type="number" class="form-control ms-2" id="maxPrice" placeholder="Đến">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="area"><i class="fas fa-vector-square me-2"></i>Diện tích (m²)</label>
+                        <div class="d-flex align-items-center">
+                            <input type="number" class="form-control me-2" id="minArea" placeholder="Từ">
+                            <span>-</span>
+                            <input type="number" class="form-control ms-2" id="maxArea" placeholder="Đến">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row mt-3">
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="rooms"><i class="fas fa-door-closed me-2"></i>Số phòng</label>
+                        <select class="form-select" id="rooms">
+                            <option value="">Tất cả</option>
+                            <option value="1">1 phòng</option>
+                            <option value="2">2 phòng</option>
+                            <option value="3">3 phòng</option>
+                            <option value="4">4+ phòng</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="furnished"><i class="fas fa-couch me-2"></i>Nội thất</label>
+                        <select class="form-select" id="furnished">
+                            <option value="">Tất cả</option>
+                            <option value="full">Đầy đủ</option>
+                            <option value="partial">Một phần</option>
+                            <option value="none">Không có</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-6 d-flex align-items-end">
+                    <button class="btn btn-primary w-100" id="searchButton">
+                        <i class="fas fa-search me-2"></i>Tìm kiếm
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Dashboard Stats -->
+        <div class="row g-3 mb-4 my-3">
+            <div class="col-12 col-sm-6 col-md-3">
+                <div class="card h-100 animate__animated animate__fadeInUp">
+                    <div class="card-body text-center">
+                        <i class="fas fa-home stats-icon"></i>
+                        <h5 class="text-muted">Tổng số phòng</h5>
+                        <h2 id="totalRooms" class="counter">0</h2>
+                        <div class="progress mt-2" style="height: 5px;">
+                            <div class="progress-bar" style="width: 100%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-sm-6 col-md-3">
+                <div class="card h-100 animate__animated animate__fadeInUp" style="animation-delay: 0.2s">
+                    <div class="card-body text-center">
+                        <i class="fas fa-door-open stats-icon"></i>
+                        <h5 class="text-muted">Phòng trống</h5>
+                        <h2 id="availableRooms" class="counter">0</h2>
+                        <div class="progress mt-2" style="height: 5px;">
+                            <div class="progress-bar bg-success" style="width: 75%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-sm-6 col-md-3">
+                <div class="card h-100 animate__animated animate__fadeInUp" style="animation-delay: 0.4s">
+                    <div class="card-body text-center">
+                        <i class="fas fa-key stats-icon"></i>
+                        <h5 class="text-muted">Đang thuê</h5>
+                        <h2 id="occupiedRooms" class="counter">0</h2>
+                        <div class="progress mt-2" style="height: 5px;">
+                            <div class="progress-bar bg-warning" style="width: 50%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-sm-6 col-md-3">
+                <div class="card h-100 animate__animated animate__fadeInUp" style="animation-delay: 0.6s">
+                    <div class="card-body text-center">
+                        <i class="fas fa-clock stats-icon"></i>
+                        <h5 class="text-muted">Sắp hết hạn HĐ</h5>
+                        <h2 id="expiringContracts" class="counter">0</h2>
+                        <div class="progress mt-2" style="height: 5px;">
+                            <div class="progress-bar bg-danger" style="width: 25%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Property Management -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="card animate__animated animate__fadeInUp" style="animation-delay: 0.8s">
+                    <div class="card-header d-flex flex-wrap justify-content-between align-items-center bg-primary text-white">
+                        <h4 class="mb-2 mb-md-0"><i class="fas fa-list me-2"></i>Quản lý bất động sản</h4>
+                        <button class="btn btn-light" data-bs-toggle="modal" data-bs-target="#addPropertyModal">
+                            <i class="fas fa-plus"></i> Thêm mới
+                        </button>
+                    </div>
+                    <div class="card-body p-0 p-md-3">
+                        <div class="table-responsive">
+                            <table class="table table-hover mb-0">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th><i class="fas fa-hashtag me-2"></i>Mã BĐS</th>
+                                        <th><i class="fas fa-building me-2"></i>Loại</th>
+                                        <th><i class="fas fa-map-marker-alt me-2"></i>Địa chỉ</th>
+                                        <th><i class="fas fa-vector-square me-2"></i>Diện tích</th>
+                                        <th><i class="fas fa-money-bill me-2"></i>Giá thuê</th>
+                                        <th><i class="fas fa-info-circle me-2"></i>Trạng thái</th>
+                                        <th><i class="fas fa-cogs me-2"></i>Thao tác</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="propertyList">
+                                    <tr>
+                                        <td>BDS001</td>
+                                        <td>Căn hộ</td>
+                                        <td>123 Nguyễn Văn A, Q.1, TP.HCM</td>
+                                        <td>75m²</td>
+                                        <td>15,000,000đ</td>
+                                        <td><span class="badge bg-success">Còn trống</span></td>
+                                        <td>
+                                            <button class="btn btn-sm btn-info"><i class="fas fa-edit"></i></button>
+                                            <button class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>BDS002</td>
+                                        <td>Nhà phố</td>
+                                        <td>456 Lê Văn B, Q.2, TP.HCM</td>
+                                        <td>120m²</td>
+                                        <td>25,000,000đ</td>
+                                        <td><span class="badge bg-warning">Đang thuê</span></td>
+                                        <td>
+                                            <button class="btn btn-sm btn-info"><i class="fas fa-edit"></i></button>
+                                            <button class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>BDS003</td>
+                                        <td>Biệt thự</td>
+                                        <td>789 Trần Văn C, Q.7, TP.HCM</td>
+                                        <td>300m²</td>
+                                        <td>50,000,000đ</td>
+                                        <td><span class="badge bg-danger">Đang sửa chữa</span></td>
+                                        <td>
+                                            <button class="btn btn-sm btn-info"><i class="fas fa-edit"></i></button>
+                                            <button class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-light py-4 mt-5 shadow-sm">
+        <div class="container text-center">
+            <p class="mb-2">
+                <i class="fas fa-copyright me-2"></i>2024 QuanLyNha.vn - Hệ thống quản lý bất động sản chuyên nghiệp
+            </p>
+            <div class="mt-2">
+                <a href="#" class="text-decoration-none text-muted mx-2"><i class="fab fa-facebook fa-lg"></i></a>
+                <a href="#" class="text-decoration-none text-muted mx-2"><i class="fab fa-twitter fa-lg"></i></a>
+                <a href="#" class="text-decoration-none text-muted mx-2"><i class="fab fa-linkedin fa-lg"></i></a>
+                <a href="#" class="text-decoration-none text-muted mx-2"><i class="fab fa-instagram fa-lg"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- Counter Up -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Counter-Up/1.0.0/jquery.counterup.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/waypoints/4.0.1/jquery.waypoints.min.js"></script>
+    <!-- Custom JS -->
+    <script src="js/main.js"></script>
+</body>
+</html>
