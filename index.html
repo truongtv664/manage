@@ -355,9 +355,6 @@
                     </li>
                 </ul>
                 <div class="ms-auto d-flex flex-nowrap align-items-center">
-                    <!-- <button class="btn btn-outline-primary me-2 animate__animated animate__fadeIn" id="toggleTheme">
-                        <i class="fas fa-moon"></i>
-                    </button> -->
                     <select class="form-select animate__animated animate__fadeIn" id="languageSelect">
                         <option value="vi">Tiếng Việt</option>
                         <option value="en">English</option>
@@ -396,32 +393,63 @@
                 </div>
                 <div class="col-md-3">
                     <div class="form-group">
-                        <label for="location"><i class="fas fa-map-marker-alt me-2"></i>Vị trí</label>
-                        <select class="form-select" id="location">
-                            <option value="">Tất cả khu vực</option>
-                            <option value="district1">Quận 1</option>
-                            <option value="district2">Quận 2</option>
-                            <option value="district3">Quận 3</option>
+                        <label for="province"><i class="fas fa-map-marker-alt me-2"></i>Tỉnh/Thành phố</label>
+                        <select class="form-select" id="province">
+                            <option value="">Chọn Tỉnh/Thành phố</option>
+                            <option value="HCM">TP. Hồ Chí Minh</option>
+                            <option value="HN">Hà Nội</option>
+                            <!-- Thêm các tỉnh thành khác -->
                         </select>
                     </div>
                 </div>
                 <div class="col-md-3">
                     <div class="form-group">
-                        <label for="priceRange"><i class="fas fa-money-bill me-2"></i>Giá thuê (triệu VNĐ)</label>
-                        <div class="d-flex align-items-center">
-                            <input type="number" class="form-control me-2" id="minPrice" placeholder="Từ">
-                            <span>-</span>
-                            <input type="number" class="form-control ms-2" id="maxPrice" placeholder="Đến">
+                        <label for="district"><i class="fas fa-map me-2"></i>Quận/Huyện</label>
+                        <select class="form-select" id="district">
+                            <option value="">Chọn Quận/Huyện</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="ward"><i class="fas fa-map-signs me-2"></i>Phường/Xã</label>
+                        <select class="form-select" id="ward">
+                            <option value="">Chọn Phường/Xã</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="row mt-3">
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="street"><i class="fas fa-road me-2"></i>Đường</label>
+                        <input type="text" class="form-control" id="street" placeholder="Nhập tên đường">
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label><i class="fas fa-ruler-combined me-2"></i>Kích thước (m)</label>
+                        <div class="d-flex">
+                            <input type="number" class="form-control me-2" id="width" placeholder="Ngang">
+                            <input type="number" class="form-control" id="length" placeholder="Dài">
                         </div>
                     </div>
                 </div>
                 <div class="col-md-3">
                     <div class="form-group">
                         <label for="area"><i class="fas fa-vector-square me-2"></i>Diện tích (m²)</label>
-                        <div class="d-flex align-items-center">
+                        <div class="d-flex">
                             <input type="number" class="form-control me-2" id="minArea" placeholder="Từ">
-                            <span>-</span>
-                            <input type="number" class="form-control ms-2" id="maxArea" placeholder="Đến">
+                            <input type="number" class="form-control" id="maxArea" placeholder="Đến">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="price"><i class="fas fa-money-bill me-2"></i>Giá (triệu VNĐ)</label>
+                        <div class="d-flex">
+                            <input type="number" class="form-control me-2" id="minPrice" placeholder="Từ">
+                            <input type="number" class="form-control" id="maxPrice" placeholder="Đến">
                         </div>
                     </div>
                 </div>
@@ -429,24 +457,28 @@
             <div class="row mt-3">
                 <div class="col-md-3">
                     <div class="form-group">
-                        <label for="rooms"><i class="fas fa-door-closed me-2"></i>Số phòng</label>
-                        <select class="form-select" id="rooms">
+                        <label for="direction"><i class="fas fa-compass me-2"></i>Hướng nhà</label>
+                        <select class="form-select" id="direction">
                             <option value="">Tất cả</option>
-                            <option value="1">1 phòng</option>
-                            <option value="2">2 phòng</option>
-                            <option value="3">3 phòng</option>
-                            <option value="4">4+ phòng</option>
+                            <option value="east">Đông</option>
+                            <option value="west">Tây</option>
+                            <option value="south">Nam</option>
+                            <option value="north">Bắc</option>
+                            <option value="northeast">Đông Bắc</option>
+                            <option value="northwest">Tây Bắc</option>
+                            <option value="southeast">Đông Nam</option>
+                            <option value="southwest">Tây Nam</option>
                         </select>
                     </div>
                 </div>
                 <div class="col-md-3">
                     <div class="form-group">
-                        <label for="furnished"><i class="fas fa-couch me-2"></i>Nội thất</label>
-                        <select class="form-select" id="furnished">
+                        <label for="legal"><i class="fas fa-file-contract me-2"></i>Pháp lý</label>
+                        <select class="form-select" id="legal">
                             <option value="">Tất cả</option>
-                            <option value="full">Đầy đủ</option>
-                            <option value="partial">Một phần</option>
-                            <option value="none">Không có</option>
+                            <option value="redbook">Sổ đỏ</option>
+                            <option value="pinkbook">Sổ hồng</option>
+                            <option value="other">Giấy tờ khác</option>
                         </select>
                     </div>
                 </div>
